@@ -20,7 +20,9 @@ if st.button("🚀 Gerar arquivos KMZ"):
     with st.spinner("Processando..."):
 
         # Caminho fixo para carregar o CSV
-        df = pd.read_csv("setores_juntados.csv", delimiter=";")
+        with zipfile.ZipFile("setores_juntados_compactado.zip") as zipped_file:
+        with zipped_file.open("setores_juntados.csv") as csv_file:
+        df = pd.read_csv(csv_file, delimiter=";")
 
         # Mapeamento de bairros para zonas
         bairro_zona_mapping = {
@@ -81,3 +83,4 @@ if st.button("🚀 Gerar arquivos KMZ"):
             file_name="KMZ_Sorteio_Manaus.zip",
             mime="application/zip"
         )
+
