@@ -19,11 +19,11 @@ num_days = st.number_input("📅 Número de dias (arquivos KMZ)", min_value=1, m
 if st.button("🚀 Gerar arquivos KMZ"):
     with st.spinner("Processando..."):
 
-        # Caminho fixo para carregar o CSV
+        # Lê o CSV compactado dentro do arquivo ZIP
         with zipfile.ZipFile("setores_juntados_compactado.zip") as zipped_file:
-        with zipped_file.open("setores_juntados.csv") as csv_file:
-        df = pd.read_csv(csv_file, delimiter=";")
-
+            with zipped_file.open("setores_juntados.csv") as csv_file:
+                df = pd.read_csv(csv_file, delimiter=";")
+        
         # Mapeamento de bairros para zonas
         bairro_zona_mapping = {
             'Adrianopólis': 'Centro-Sul', 'Águas Claras': 'Norte', 'Aleixo': 'Centro-Sul', 'Alvorada': 'Centro-Oeste',
@@ -31,16 +31,18 @@ if st.button("🚀 Gerar arquivos KMZ"):
             'Betania': 'Sul', 'Cachoeirinha': 'Sul', 'Campos Sales': 'Oeste', 'Centro': 'Sul', 'Chapada': 'Centro-Sul',
             'Cidade de Deus': 'Norte', 'Cidade Nova': 'Norte', 'Colonia Antonio Aleixo': 'Leste', 'Colonia Oliveira Machado': 'Sul',
             'Colonia Santo Antonio': 'Norte', 'Colonia Terra Nova': 'Norte', 'Compensa': 'Oeste', 'Coroado': 'Leste',
-            'Crespo': 'Sul', 'Dom Pedro': 'Centro-Oeste','Educandos': 'Sul', 'Flores': 'Centro-Sul', 'Gilberto Mestrinho': 'Leste', 'Gloria': 'Oeste', 'Grande Vitoria': 'Leste',
-            'Japiim': 'Sul', 'Jardim Maua': 'Leste', 'Jorge Teixeira': 'Leste', 'Lago Azul': 'Norte', 'Lirio do Vale': 'Oeste',
-            'Mauazinho': 'Leste', 'Monte das Oliveiras': 'Norte', 'Morro da Liberdade': 'Sul', 'Mutirão': 'Norte',
-            'Nossa Senhora Aparecida': 'Sul', 'Nossa Senhora das Graças': 'Centro-Sul', 'Nossa Senhora de Fátima': 'Sul',
-            'Nova Cidade': 'Norte', 'Nova Esperanca': 'Oeste', 'Novo Aleixo': 'Norte', 'Novo Israel': 'Norte',
-            'Parque 10 de novembro': 'Centro-Sul', 'Parque das Nações': 'Leste', 'Petropolis': 'Sul', 'Planalto': 'Centro-Oeste',
-            'Ponta Negra': 'Oeste', 'Praça 14': 'Sul', 'Presidente Vargas': 'Sul', 'Raiz': 'Sul', 'Redenção': 'Centro-Oeste',
-            'Santa Etelvina': 'Norte', 'Santa Luzia': 'Sul', 'Santo Agostinho': 'Oeste', 'Santo Antonio': 'Oeste', 'Sao Francisco': 'Sul',
-            'São Geraldo': 'Centro-Sul', 'Sao Jorge': 'Oeste', 'São José': 'Leste', 'São Lazaro': 'Sul', 'São Raimundo': 'Oeste',
-            'Tancredo Neves': 'Leste', 'Taruma': 'Oeste', 'Taruma Açu': 'Oeste', 'Vila da Prata': 'Oeste', 'Zumbi': 'Leste'
+            'Crespo': 'Sul', 'Dom Pedro': 'Centro-Oeste', 'Educandos': 'Sul', 'Flores': 'Centro-Sul', 'Gilberto Mestrinho': 'Leste',
+            'Gloria': 'Oeste', 'Grande Vitoria': 'Leste', 'Japiim': 'Sul', 'Jardim Maua': 'Leste', 'Jorge Teixeira': 'Leste',
+            'Lago Azul': 'Norte', 'Lirio do Vale': 'Oeste', 'Mauazinho': 'Leste', 'Monte das Oliveiras': 'Norte',
+            'Morro da Liberdade': 'Sul', 'Mutirão': 'Norte', 'Nossa Senhora Aparecida': 'Sul',
+            'Nossa Senhora das Graças': 'Centro-Sul', 'Nossa Senhora de Fátima': 'Sul', 'Nova Cidade': 'Norte',
+            'Nova Esperanca': 'Oeste', 'Novo Aleixo': 'Norte', 'Novo Israel': 'Norte', 'Parque 10 de novembro': 'Centro-Sul',
+            'Parque das Nações': 'Leste', 'Petropolis': 'Sul', 'Planalto': 'Centro-Oeste', 'Ponta Negra': 'Oeste',
+            'Praça 14': 'Sul', 'Presidente Vargas': 'Sul', 'Raiz': 'Sul', 'Redenção': 'Centro-Oeste', 
+            'Santa Etelvina': 'Norte', 'Santa Luzia': 'Sul', 'Santo Agostinho': 'Oeste', 'Santo Antonio': 'Oeste',
+            'Sao Francisco': 'Sul', 'São Geraldo': 'Centro-Sul', 'Sao Jorge': 'Oeste', 'São José': 'Leste',
+            'São Lazaro': 'Sul', 'São Raimundo': 'Oeste', 'Tancredo Neves': 'Leste', 'Taruma': 'Oeste',
+            'Taruma Açu': 'Oeste', 'Vila da Prata': 'Oeste', 'Zumbi': 'Leste'
         }
 
         df['ZONA'] = df['DSC_LOCALIDADE'].map(bairro_zona_mapping)
@@ -83,4 +85,3 @@ if st.button("🚀 Gerar arquivos KMZ"):
             file_name="KMZ_Sorteio_Manaus.zip",
             mime="application/zip"
         )
-
